@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Position</title>
+</head>
+<body>
+    <h1>Move your mouse!</h1>
+    <p id="position">Mouse Position: (X: 0, Y: 0)</p>
+
+    <script>
+        const positionElement = document.getElementById('position');
+        document.addEventListener('mousemove', (event) => {
+            const x = event.clientX;
+            const y = event.clientY;
+            positionElement.textContent = `Mouse Position: (X: ${x}, Y: ${y})`;
+        });
+    </script>
+</body>
+</html>
