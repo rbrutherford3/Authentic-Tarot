@@ -7,21 +7,27 @@
 </head>
 <body>
     <h1>Move your mouse!</h1>
-    <p id="position">Mouse Position: (X: 0, Y: 0)</p>
+    <p id="output">Tap or click the screen!</p>
 
     <script>
-        const positionElement = document.getElementById('position');
+        const outputElement = document.getElementById('output');
+        function getCardIndex(x, y) {
+            var sum = x + y;
+            var cardIndex = Math.floor(sum % 78) + 1;
+            outputElement.textContent = `Card index is ${cardIndex}`;
+        }
+
         document.addEventListener('click', function(event) {
-            const x = event.clientX;
-            const y = event.clientY;
-            positionElement.textContent = `Mouse Position: (X: ${x}, Y: ${y})`;
+            var x = event.clientX;
+            var y = event.clientY;
+            getCardIndex(x, y);
         });
     
         document.addEventListener('touchstart', function(event) {
-            const touch = event.touches[0]; // Get the first touch
-            const x = touch.clientX;
-            const y = touch.clientY;    
-            positionElement.textContent = `Mouse Position: (X: ${x}, Y: ${y})`;
+            var touch = event.touches[0]; // Get the first touch
+            var x = touch.clientX;
+            var y = touch.clientY;    
+            getCardIndex(x, y);
         }, { passive: true }); // Add { passive: true } to avoid potential scrolling issues
     </script>
 </body>
