@@ -11,11 +11,18 @@
 
     <script>
         const positionElement = document.getElementById('position');
-        document.addEventListener('mousemove', (event) => {
+        document.addEventListener('click', function(event) {
             const x = event.clientX;
             const y = event.clientY;
             positionElement.textContent = `Mouse Position: (X: ${x}, Y: ${y})`;
         });
+    
+        document.addEventListener('touchstart', function(event) {
+            const touch = event.touches[0]; // Get the first touch
+            const x = touch.clientX;
+            const y = touch.clientY;    
+            positionElement.textContent = `Mouse Position: (X: ${x}, Y: ${y})`;
+        }, { passive: true }); // Add { passive: true } to avoid potential scrolling issues
     </script>
 </body>
 </html>
