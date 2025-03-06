@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="tarot-images.js"></script>
     <title>Mouse Position</title>
 </head>
 <body>
@@ -10,11 +11,13 @@
     <p id="output">Tap or click the screen!</p>
 
     <script>
+        const tarotDeck = JSON.parse(tarotImages);
         const outputElement = document.getElementById('output');
+
         function getCardIndex(x, y) {
             var sum = x + y;
-            var cardIndex = Math.floor(sum % 78) + 1;
-            outputElement.textContent = `Card index is ${cardIndex}`;
+            var cardIndex = Math.floor(sum % 78);
+            outputElement.textContent = `${tarotDeck.cards[cardIndex].name}`;
         }
 
         document.addEventListener('click', function(event) {
@@ -26,7 +29,7 @@
         document.addEventListener('touchstart', function(event) {
             var touch = event.touches[0]; // Get the first touch
             var x = touch.clientX;
-            var y = touch.clientY;    
+            var y = touch.clientY;
             getCardIndex(x, y);
         }, { passive: true }); // Add { passive: true } to avoid potential scrolling issues
     </script>
