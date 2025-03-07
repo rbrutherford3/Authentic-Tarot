@@ -3,7 +3,6 @@ body {
     color: #9c9c9c;
     font-family: sans-serif;
     user-select: none;
-    overscroll-behavior: none;
 }
 
 h1 {
