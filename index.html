@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1 id="header">Tap and drag or click and drag to shuffle!</h1>
-    <div class="container" id="pulled"></div>
+    <div id="pulled"></div>
     <div class="container" id="container"></div>
 </body>
 <script>
@@ -53,7 +53,7 @@
         var imagePath = card.getAttribute("image-path");
         card.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
         var clone=card.cloneNode(true);
-        clone.style.setProperty("margin", "10px 10px 10px 10px");
+        clone.style.setProperty("margin", "5px 5px 5px 5px");
         clone.removeAttribute("onclick");
         pulled.appendChild(clone);
         card.style.setProperty("visibility", "hidden");
