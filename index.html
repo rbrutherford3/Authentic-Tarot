@@ -9,6 +9,7 @@
 </head>
 <body>
     <h1 id="header">Keep tapping screen until cards appear! This shuffles the deck</h1>
+    <div class="container" id="pulled"></div>
     <div class="container" id="container"></div>
 </body>
 <script>
@@ -16,6 +17,7 @@
     var numCards = 78;
     var index = 0;
     const header = document.getElementById("header");
+    const pulled = document.getElementById("pulled");
     const container = document.getElementById("container");
     const startTime = Date.now();
 
@@ -39,7 +41,8 @@
     }
 
     function showCards() {
-        container.style.setProperty("display", "initial");
+        container.style.setProperty("display", "block");
+        pulled.style.setProperty("display", "block");
         header.innerText = "Tap/click a card to reveal it";
     };
 
@@ -48,6 +51,11 @@
         card.title = card.getAttribute("data-name");
         var imagePath = card.getAttribute("image-path");
         card.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
+        var clone=card.cloneNode(true);
+        clone.style.setProperty("margin", "10px 10px 10px 10px");
+        clone.removeAttribute("onclick");
+        pulled.appendChild(clone);
+        card.style.setProperty("visibility", "hidden");
     }
 
     function shuffle(event) {
