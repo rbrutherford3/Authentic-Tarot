@@ -8,7 +8,7 @@
     <title>Authentic Tarot</title>
 </head>
 <body>
-    <h1 id="header">Keep tapping screen until cards appear! This shuffles the deck</h1>
+    <h1 id="header">Tap and drag or click and drag to shuffle!</h1>
     <div class="container" id="pulled"></div>
     <div class="container" id="container"></div>
 </body>
@@ -16,6 +16,7 @@
     var tarotDeck = JSON.parse(tarotImages);
     var numCards = 78;
     var index = 0;
+    var isDragging =false;
     const header = document.getElementById("header");
     const pulled = document.getElementById("pulled");
     const container = document.getElementById("container");
@@ -58,7 +59,7 @@
         card.style.setProperty("visibility", "hidden");
     }
 
-    function shuffle(event) {
+    function shuffle(e) {
         var x = event.clientX;
         var y = event.clientY;
         if (numCards > 0) {
@@ -73,5 +74,29 @@
     }
 
     document.addEventListener('click', shuffle);
+
+    function handleStart(e) {
+        isDragging = true;
+    }
+
+    function handleMove(e) {
+        if (isDragging)
+            shuffle(e);
+    }
+
+    function handleEnd() {
+        isDragging = false;
+    }
+
+    // Desktop events
+    document.addEventListener('mousedown', handleStart);
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
+
+    // Mobile events
+    document.addEventListener('touchstart', handleStart);
+    document.addEventListener('touchmove', handleMove);
+    document.addEventListener('touchend', handleEnd);
+    document.addEventListener('touchcancel', handleEnd);
 </script>
 </html>
