@@ -8,33 +8,62 @@
     <title>Authentic Tarot</title>
 </head>
 <body>
-    <h1>Tap/Click the screen to pick a card! Repeat as much as you need to!</h1>
+    <h1 id="header">Keep tapping screen until cards appear! This shuffles the deck</h1>
     <div class="container" id="container"></div>
 </body>
 <script>
     var tarotDeck = JSON.parse(tarotImages);
-    var numCards = 78
-    const outputElement = document.getElementById('output');
+    var numCards = 78;
+    var index = 0;
+    const header = document.getElementById("header");
+    const container = document.getElementById("container");
+    const startTime = Date.now();
 
     function getCardIndex(x, y) {
-        var sum = x + y;
-        var cardIndex = Math.floor(sum % numCards);
+        var endTime = Date.now();
+        var rand = x + y + endTime - startTime;
+        var cardIndex = Math.floor(rand % numCards);
         var cardName = tarotDeck.cards[cardIndex].name;
         var cardImage = tarotDeck.cards[cardIndex].img;
         var card = document.createElement("div");
-        card.setAttribute("class", "card")
-        card.style.setProperty("background-image", `url(\"cards/${cardImage}\")`);
-        card.title = cardName
-        document.getElementById("container").appendChild(card)
-        tarotDeck.cards.splice(cardIndex, 1)
+        card.setAttribute("class", "card");
+        card.setAttribute("id", index);
+        card.setAttribute("data-index", cardIndex);
+        card.setAttribute("data-name", cardName)
+        card.setAttribute("image-path", cardImage);
+        card.setAttribute("onclick", "reveal(" + index  + ")");
+        container.appendChild(card);
+        tarotDeck.cards.splice(cardIndex, 1);
         numCards--;
+        index++;
     }
 
-    document.addEventListener('click', function(event) {
+    function showCards() {
+        container.style.setProperty("display", "initial");
+        header.innerText = "Tap/click a card to reveal it";
+    };
+
+    function reveal(index) {
+        var card = document.getElementById(index);
+        card.title = card.getAttribute("data-name");
+        var imagePath = card.getAttribute("image-path");
+        card.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
+    }
+
+    function shuffle(event) {
         var x = event.clientX;
         var y = event.clientY;
-        if (numCards > 0)
+        if (numCards > 0) {
             getCardIndex(x, y);
-    });
+            percentDone = Math.floor((100 - (numCards / 78 * 100)));
+            header.innerText = percentDone + "% done"
+        }
+        else {
+            showCards();
+            document.removeEventListener('click', shuffle);
+        }
+    }
+
+    document.addEventListener('click', shuffle);
 </script>
 </html>
