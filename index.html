@@ -4,34 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="tarot-images.js"></script>
-    <title>Mouse Position</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Authentic Tarot</title>
 </head>
 <body>
-    <h1>Move your mouse!</h1>
-    <p id="output">Tap or click the screen!</p>
-
-    <script>
-        const tarotDeck = JSON.parse(tarotImages);
-        const outputElement = document.getElementById('output');
-
-        function getCardIndex(x, y) {
-            var sum = x + y;
-            var cardIndex = Math.floor(sum % 78);
-            outputElement.textContent = `${tarotDeck.cards[cardIndex].name}`;
-        }
-
-        document.addEventListener('click', function(event) {
-            var x = event.clientX;
-            var y = event.clientY;
-            getCardIndex(x, y);
-        });
-    
-        document.addEventListener('touchstart', function(event) {
-            var touch = event.touches[0]; // Get the first touch
-            var x = touch.clientX;
-            var y = touch.clientY;
-            getCardIndex(x, y);
-        }, { passive: true }); // Add { passive: true } to avoid potential scrolling issues
-    </script>
+    <h1>Tap/Click the screen to pick a card! Repeat as much as you need to!</h1>
+    <div class="container" id="container"></div>
 </body>
+<script>
+    var tarotDeck = JSON.parse(tarotImages);
+    var numCards = 78
+    const outputElement = document.getElementById('output');
+
+    function getCardIndex(x, y) {
+        var sum = x + y;
+        var cardIndex = Math.floor(sum % numCards);
+        var cardName = tarotDeck.cards[cardIndex].name;
+        var card = document.createElement("div");
+        card.setAttribute("class", "card")
+        card.textContent = cardName
+        document.getElementById("container").appendChild(card)
+        tarotDeck.cards.splice(cardIndex, 1)
+        numCards--;
+    }
+
+    document.addEventListener('click', function(event) {
+        var x = event.clientX;
+        var y = event.clientY;
+        if (numCards > 0)
+            getCardIndex(x, y);
+    });
+
+    document.addEventListener('touchstart', function(event) {
+        var touch = event.touches[0]; // Get the first touch
+        var x = touch.clientX;
+        var y = touch.clientY;
+        if (numCards > 0)
+            getCardIndex(x, y);
+    }, { passive: true }); // Add { passive: true } to avoid potential scrolling issues
+</script>
 </html>
