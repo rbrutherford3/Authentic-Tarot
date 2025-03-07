@@ -59,9 +59,7 @@
         card.style.setProperty("visibility", "hidden");
     }
 
-    function shuffle(e) {
-        var x = event.clientX;
-        var y = event.clientY;
+    function shuffle(x, y) {
         if (numCards > 0) {
             getCardIndex(x, y);
             percentDone = Math.floor((100 - (numCards / 78 * 100)));
@@ -73,7 +71,19 @@
         }
     }
 
-    document.addEventListener('click', shuffle);
+    function getXYmouse(e) {
+        var x = e.clientX;
+        var y = e.clientY;
+        shuffle(x, y);
+    }
+
+    function getXYtouch(e) {
+        var x = e.touches[0].clientX;
+        var y = e.touches[0].clientY;
+        shuffle(x, y);
+    }
+
+    document.addEventListener('click', getXYmouse);
 
     function handleStart(e) {
         isDragging = true;
@@ -81,7 +91,7 @@
 
     function handleMove(e) {
         if (isDragging)
-            shuffle(e);
+            getXYmouse(e);
     }
 
     function handleEnd() {
@@ -94,9 +104,6 @@
     document.addEventListener('mouseup', handleEnd);
 
     // Mobile events
-    document.addEventListener('touchstart', handleStart);
-    document.addEventListener('touchmove', handleMove);
-    document.addEventListener('touchend', handleEnd);
-    document.addEventListener('touchcancel', handleEnd);
+    document.addEventListener('touchmove', getXYtouch);
 </script>
 </html>
