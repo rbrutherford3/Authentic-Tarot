@@ -10,7 +10,7 @@
 <body>
     <h1 id="header">Tap and drag or click and drag to shuffle!</h1>
     <div id="pulled"></div>
-    <div class="container" id="container"></div>
+    <div id="container"></div>
 </body>
 <script>
     var tarotDeck = JSON.parse(tarotImages);
@@ -54,6 +54,7 @@
         card.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
         var clone=card.cloneNode(true);
         clone.style.setProperty("margin", "5px 5px 5px 5px");
+        clone.style.setProperty("cursor", "auto");
         clone.removeAttribute("onclick");
         pulled.appendChild(clone);
         card.style.setProperty("visibility", "hidden");
