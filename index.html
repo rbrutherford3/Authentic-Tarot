@@ -10,56 +10,79 @@
 <body>
     <h1 id="header">Tap and drag or click and drag to shuffle!</h1>
     <div id="pulled"></div>
-    <div id="container"></div>
+    <div id="shuffled"></div>
 </body>
 <script>
-    var tarotDeck = JSON.parse(tarotImages);
+    // Initiate variables, pull the tarot card json object from tarot-images.js
+    var deck = JSON.parse(tarotImages);
     var numCards = 78;
     var index = 0;
-    var isDragging =false;
-    const header = document.getElementById("header");
-    const pulled = document.getElementById("pulled");
-    const container = document.getElementById("container");
+    var isDragging = false;
     const startTime = Date.now();
 
+    // Grab HTML elements
+    const header = document.getElementById("header");
+    const pulled = document.getElementById("pulled");
+    const shuffled = document.getElementById("shuffled");
+
+    // Use the mouse/finger coordinates and the time to create an authentically random card selection
     function getCardIndex(x, y) {
+
+        // Crude formula, but it works
         var endTime = Date.now();
-        var rand = x + y + endTime - startTime;
+        var rand = x + y + endTime - startTime; 
         var cardIndex = Math.floor(rand % numCards);
-        var cardName = tarotDeck.cards[cardIndex].name;
-        var cardImage = tarotDeck.cards[cardIndex].img;
+
+        // Grab the card information from the JSON object
+        var cardName = deck.cards[cardIndex].name;
+        var cardImage = deck.cards[cardIndex].img;
+
+        // Create the card object as a div element
         var card = document.createElement("div");
         card.setAttribute("class", "card");
-        card.setAttribute("id", index);
-        card.setAttribute("data-index", cardIndex);
+        card.setAttribute("id", index); // card position in shuffle
+        card.setAttribute("data-index", cardIndex); // card position in an unshuffled deck
         card.setAttribute("data-name", cardName)
         card.setAttribute("image-path", cardImage);
         card.setAttribute("onclick", "reveal(" + index  + ")");
-        container.appendChild(card);
-        tarotDeck.cards.splice(cardIndex, 1);
+
+        // Move card from deck to shuffled pile
+        shuffled.appendChild(card);
+        deck.cards.splice(cardIndex, 1);
+
+        // Update counters
         numCards--;
         index++;
     }
 
+    // Unhide divs for shuffled and pulled cards (after shuffle is complete)
     function showCards() {
-        container.style.setProperty("display", "block");
+        shuffled.style.setProperty("display", "block");
         pulled.style.setProperty("display", "block");
         header.innerText = "Tap/click a card to reveal it";
     };
 
+    // Show a shuffled card (move from shuffled div to pulled div)
     function reveal(index) {
+
+        // Copy the card
         var card = document.getElementById(index);
-        card.title = card.getAttribute("data-name");
+        var clone = card.cloneNode(true);
+
+        // Pull the card and flip it (show face of card, etc)
+        clone.title = card.getAttribute("data-name");
         var imagePath = card.getAttribute("image-path");
-        card.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
-        var clone=card.cloneNode(true);
+        clone.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
         clone.style.setProperty("margin", "5px 5px 5px 5px");
         clone.style.setProperty("cursor", "auto");
         clone.removeAttribute("onclick");
+
+        // Add the flipped card to the pulled area, remove from shuffled area
         pulled.appendChild(clone);
         card.style.setProperty("visibility", "hidden");
     }
 
+    // Pick a "random" card until there are no more
     function shuffle(x, y) {
         if (numCards > 0) {
             getCardIndex(x, y);
@@ -68,9 +91,15 @@
         }
         else {
             showCards();
-            document.removeEventListener('click', shuffle);
+            document.removeEventListener("click", getXYmouse);
+            document.removeEventListener("mousedown", handleStart);
+            document.removeEventListener("mousemove", handleMove);
+            document.removeEventListener("mouseup", handleEnd);
+            document.removeEventListener("touchmove", getXYtouch);
         }
     }
+
+    // Event handlers. Grab coordinates and call the above functions
 
     function getXYmouse(e) {
         var x = e.clientX;
@@ -83,8 +112,6 @@
         var y = e.touches[0].clientY;
         shuffle(x, y);
     }
-
-    document.addEventListener('click', getXYmouse);
 
     function handleStart(e) {
         isDragging = true;
@@ -99,12 +126,17 @@
         isDragging = false;
     }
 
+    // Set up event listeners
+
     // Desktop events
-    document.addEventListener('mousedown', handleStart);
-    document.addEventListener('mousemove', handleMove);
-    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener("mousedown", handleStart);
+    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mouseup", handleEnd);
 
     // Mobile events
-    document.addEventListener('touchmove', getXYtouch);
+    document.addEventListener("touchmove", getXYtouch);
+
+    // Both
+    document.addEventListener("click", getXYmouse);
 </script>
 </html>
