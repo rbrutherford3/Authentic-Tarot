@@ -25,4 +25,4 @@ Please contact rbrutherford3 on GitHub if interested in contributing.
 
 ## License
 
-MIT © Robert Rutherford
+[MIT © Robert Rutherford](https://github.com/rbrutherford3/Authentic-Tarot/blob/main/LICENSE)
