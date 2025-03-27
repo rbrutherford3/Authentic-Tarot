@@ -11,6 +11,7 @@
     <h1 id="header">Tap and drag or click and drag to shuffle!</h1>
     <div id="pulled"></div>
     <div id="shuffled"></div>
+    <div id="picked" onclick="unpick();"></div>
 </body>
 <script>
     // Initiate variables, pull the tarot card json object from tarot-images.js
@@ -24,6 +25,7 @@
     const header = document.getElementById("header");
     const pulled = document.getElementById("pulled");
     const shuffled = document.getElementById("shuffled");
+    const picked = document.getElementById("picked");
 
     // Use the mouse/finger coordinates and the time to create an authentically random card selection
     function getCardIndex(x, y) {
@@ -76,11 +78,25 @@
         clone.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
         clone.style.setProperty("margin", "5px 5px 5px 5px");
         clone.style.setProperty("cursor", "auto");
+
+        // Change function of onclick action to zoom in on card
         clone.removeAttribute("onclick");
+        clone.setAttribute("onclick", "pick('" + imagePath + "');")
 
         // Add the flipped card to the pulled area, remove from shuffled area
         pulled.appendChild(clone);
         card.style.setProperty("visibility", "hidden");
+    }
+
+    // Show zoomed-in version of card
+    function pick(imagePath) {
+        picked.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
+        picked.style.setProperty("display", "block");
+    }
+
+    // Hide zoomed-in version of card (by tapping/clicking it it)
+    function unpick() {
+        picked.style.setProperty("display", "none");
     }
 
     // Pick a "random" card until there are no more
