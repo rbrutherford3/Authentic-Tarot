@@ -4,7 +4,7 @@
 
 A tarot card drawing program that features an "authentic" shuffle. No random number generation is used. It is all based on the user input of a mouse/finger dragging across the screen. The position of each point in the drag and is combined with the time in a not-so-sophisticated formula to produce "random" card picks. The cards are then all laid out in that random order (face down) for the user to pick. [A JSON file and scanned card images](https://www.kaggle.com/datasets/lsind18/tarot-json) were obtained under the [MIT License](https://opensource.org/license/MIT). No server-side scripting is used, only HTML, CSS, and Javascript.
 
-Go to [https://authentictarot.spiffindustries.com/](https://authentictarot.spiffindustries.com/) for a working demo!
+Go to [https://spiffindustries.com/authentictarot/](https://spiffindustries.com/authentictarot/) for a working demo!
 
 ## Background
 
