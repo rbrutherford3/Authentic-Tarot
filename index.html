@@ -32,7 +32,7 @@
 
         // Crude formula, but it works
         var endTime = Date.now();
-        var rand = x + y + endTime - startTime; 
+        var rand = x + y + endTime - startTime + 1; 
         var cardIndex = Math.floor(rand % numCards);
 
         // Grab the card information from the JSON object
