@@ -45,14 +45,17 @@ h1 {
 }
 
 #picked {
-    /* display: none; */
     width: 350px;
     height: 600px;
-    border: 1px solid black;
-    background-color:#9c9c9c;
+    max-width: 80vw;
+    max-height: 80vh;
     position: absolute;
-    top: 25px;
-    left: calc(50% - 175px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     z-index: 2;
     display: none;
 }
