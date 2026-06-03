@@ -12,7 +12,12 @@
     <div id="pulled"></div>
     <div id="shuffled"></div> 
     <div id="backdrop"></div>
-    <div id="picked"></div>
+    <div id="container">
+        <h2 id="card_name"></h2>
+        <div id="picked"></div>
+        <h2 id="card_link"></h2>
+    </div>
+    </div>
 </body>
 <script>
     // Initiate variables, pull the tarot card json object from tarot-images.js
@@ -27,7 +32,11 @@
     const pulled = document.getElementById("pulled");
     const shuffled = document.getElementById("shuffled");
     const backdrop = document.getElementById("backdrop");
+    const container = document.getElementById("container");
     const picked = document.getElementById("picked");
+    const card_name = document.getElementById("card_name");
+    const card_link = document.getElementById("card_link");
+    card_link.textContent = "Find more info on Google";
 
     // Use the mouse/finger coordinates and the time to create an authentically random card selection
     function getCardIndex(x, y) {
@@ -63,8 +72,10 @@
     function showCards() {
         shuffled.style.setProperty("display", "block");
         pulled.style.setProperty("display", "block");
-        header.innerText = "Tap/click a card to reveal it";
-        document.body.style.setProperty("overscroll-behavior", "auto");
+        header.textContent = "Select a card!";
+        document.body.style.setProperty("overscroll-behavior-y", "auto");
+        document.documentElement.style.setProperty("overscroll-behavior-y", "auto");
+        document.body.style.setProperty("user-select", "auto");
     };
 
     // Show a shuffled card (move from shuffled div to pulled div)
@@ -83,7 +94,7 @@
 
         // Change function of onclick action to zoom in on card
         clone.removeAttribute("onclick");
-        clone.setAttribute("onclick", "pick('" + imagePath + "', event);")
+        clone.setAttribute("onclick", "pick('" + imagePath + "', '" + clone.title + "', event);",)
 
         // Add the flipped card to the pulled area, remove from shuffled area
         pulled.appendChild(clone);
@@ -91,18 +102,27 @@
     }
 
     // Show zoomed-in version of card
-    function pick(imagePath, e) {
+    function pick(imagePath, cardTitle, e) {
+        container.style.setProperty("display", "block");
+        window.scrollTo(0, 0);
         picked.style.setProperty("background-image", `url(\"cards/${imagePath}\")`);
         picked.style.setProperty("display", "block");
+        card_name.style.setProperty("display", "block");
+        card_link.style.setProperty("display", "block");
         backdrop.style.setProperty("display", "block");
         picked.setAttribute("onclick", "unpick(event);");
         backdrop.setAttribute("onclick", "unpick(event);");
+        card_name.textContent = cardTitle;
+        var query = cardTitle.replaceAll(" ", "+") + "+tarot+card";
+        card_link.innerHTML = '<a href="https://www.google.com/search?q=' + query + '" target="_blank">' + card_link.textContent + '</a>';
     }
 
     // Hide zoomed-in version of card (by tapping/clicking it it)
     function unpick(e) {
         picked.style.setProperty("display", "none");
         backdrop.style.setProperty("display", "none");
+        card_name.style.setProperty("display", "none");
+        card_link.style.setProperty("display", "none");
         picked.removeAttribute("onclick");
         backdrop.removeAttribute("onclick");
     }
@@ -112,7 +132,7 @@
         if (numCards > 0) {
             getCardIndex(x, y);
             percentDone = Math.floor((100 - (numCards / 78 * 100)));
-            header.innerText = percentDone + "% done"
+            header.textContent = percentDone + "% done"
         }
         else {
             showCards();
